@@ -1,0 +1,10 @@
+.invalid-input {
+  background-color: transparent;
+  border: 1px solid transparent;
+  border-color: red !important;
+  border-left: none;
+  border-right: none;
+}
+input:focus {
+  background-color: white;
+}

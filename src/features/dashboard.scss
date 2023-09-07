@@ -1,0 +1,37 @@
+.text-white {
+  color: white;
+}
+
+@media (max-width: 768px) {
+  .bg-saldo-container {
+    position: relative;
+    text-align: center;
+  }
+
+  .bg-saldo-container img {
+    width: 100%;
+    height: auto;
+  }
+
+  .saldo-text {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    width: 100%;
+    padding: 10px;
+  }
+}
+
+.banner-container {
+  max-width: 100%;
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
+.banner-container .d-flex {
+  flex-wrap: nowrap;
+}
