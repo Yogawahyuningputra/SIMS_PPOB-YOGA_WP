@@ -36,9 +36,11 @@ export const fetchBanner = createAsyncThunk("datas/fetchBanner", async () => {
 });
 export const fetchTransactionHistory = createAsyncThunk(
   "datas/fetchTransactionHistory",
-  async () => {
+  async (offset) => {
     try {
-      const response = await API.get("/transaction/history");
+      const response = await API.get(
+        `/transaction/history?offset=0&limit=${offset}`
+      );
       return response.data;
     } catch (error) {
       throw error;

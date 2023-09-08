@@ -41,7 +41,7 @@ const Categories = ({ services }) => {
           </div>
         </Col>
       </div>
-      <Payment selectedService={selectedService} />
+      {selectedService && <Payment selectedService={selectedService} />}
     </>
   );
 };

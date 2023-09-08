@@ -8,6 +8,7 @@ const initialState = {
   users: null,
   status: "idle", //'idle' | 'loading' | 'succeeded' | 'failed'
   error: null,
+  profile_image: null,
 };
 
 export const registerUser = createAsyncThunk(
@@ -78,13 +79,16 @@ export const uploadImageUser = createAsyncThunk(
   "user/uploadImageUser",
   async (userData) => {
     try {
-      // const config = {
-      //   headers: {
-      //     "Content-Type": "multipart/form-data",
-      //   },
-      // };
-      console.log("userData", userData);
-      const response = await API.put("profile/image", userData);
+      const formData = new FormData();
+      formData.append("profile_image", userData.profile_image);
+
+      const config = {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      };
+
+      const response = await API.put("/profile/image", formData, config);
       return response.data;
     } catch (error) {
       if (error.response) {
@@ -100,6 +104,7 @@ export const uploadImageUser = createAsyncThunk(
     }
   }
 );
+
 export const fetchProfile = createAsyncThunk("user/fetchProfile", async () => {
   const response = await API.get("/profile");
   return response.data;
@@ -162,7 +167,7 @@ const usersSlice = createSlice({
         state.status = "loading";
       })
       .addCase(uploadImageUser.fulfilled, (state, action) => {
-        state.users = action.payload;
+        state.profile_image = action.payload;
         state.status = "succeeded";
       })
       .addCase(uploadImageUser.rejected, (state, action) => {

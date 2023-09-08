@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Row, Container, Stack, Card } from "react-bootstrap";
 import Hero from "./Hero";
 import { useDispatch, useSelector } from "react-redux";
@@ -12,12 +12,14 @@ import moment from "moment/moment";
 const Transaction = () => {
   const dispatch = useDispatch();
   const history = useSelector(getTransactionHistory);
-
+  const [offset, setOffset] = useState(5);
   useEffect(() => {
-    dispatch(fetchTransactionHistory());
-  }, [dispatch]);
+    dispatch(fetchTransactionHistory(offset));
+  }, [dispatch, offset]);
 
-  console.log("history", history);
+  const handleShowMore = () => {
+    setOffset(offset + 5);
+  };
 
   return (
     <>
@@ -44,7 +46,8 @@ const Transaction = () => {
                         : "fw-bold fs-4 text-danger"
                     }
                   >
-                    + {formatIDR(item?.total_amount)}
+                    {item?.transaction_type == "TOPUP" ? " + " : " - "}
+                    {formatIDR(item?.total_amount)}
                   </p>
                   <p>
                     {moment(item?.created_on).format("DD MMMM YYYY hh:mm")} WIB
@@ -58,7 +61,13 @@ const Transaction = () => {
             </Card>
           ))}
 
-          <div className="text-center mt-5 text-danger fw-bold">Show More </div>
+          <div
+            className="text-center mt-5 text-danger fw-bold"
+            onClick={handleShowMore}
+            style={{ cursor: "pointer" }}
+          >
+            Show More{" "}
+          </div>
         </Row>
       </Container>
     </>

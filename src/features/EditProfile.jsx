@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import {
   Container,
   Form,
@@ -24,6 +25,7 @@ const EditProfile = () => {
     formState: { errors },
   } = useForm();
   const [edit, setEdit] = useState(false);
+  const [selectedFile, setSelectedFile] = useState(null);
   const dispatch = useDispatch();
   const profile = useSelector(getProfile);
 
@@ -41,22 +43,26 @@ const EditProfile = () => {
   const handleEdit = () => {
     setEdit(true);
   };
+  const handleChange = (e) => {
+    if (e.target.type === "file") {
+      setSelectedFile({
+        ...selectedFile,
+        [e.target.name]: e.target.files[0],
+      });
+    }
+  };
 
   const fileInputRef = useRef(null);
-
   const handleFileUpload = () => {
     fileInputRef.current.click();
   };
-
-  const handleUploadImage = (file) => {
-    try {
-      const formData = new FormData();
-      formData.set("profile_image", file);
-      dispatch(uploadImageUser(formData));
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  if (selectedFile) {
+    dispatch(uploadImageUser(selectedFile)).catch((error) => {
+      console.error("Error uploading image:", error);
+      setSelectedFile(null);
+    });
+    setSelectedFile(null);
+  }
 
   const handleLogout = () => {
     dispatch(logout());
@@ -70,6 +76,7 @@ const EditProfile = () => {
         <div className="mt-5">
           <Badge bg="light" text="dark">
             <HiPencil
+              id="profile_image"
               className="text-dark fs-6"
               style={{ cursor: "pointer" }}
               onClick={handleFileUpload}
@@ -79,14 +86,9 @@ const EditProfile = () => {
             type="file"
             name="profile_image"
             ref={fileInputRef}
+            value={selectedFile?.profile_image}
             style={{ display: "none" }} // Hide the file input
-            onChange={(e) => {
-              // Handle file selection here
-              const selectedFile = e.target.files[0];
-              if (selectedFile) {
-                handleUploadImage(selectedFile);
-              }
-            }}
+            onChange={handleChange}
           />
         </div>
       </div>
