@@ -7,19 +7,17 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   fetchBanner,
   fetchServices,
-  getBanner,
-  getServices,
+  getBannerData,
+  getServicesData,
 } from "./datas/datasSlice";
 import Banner from "../components/Banner";
 import Hero from "../components/Hero";
 const Dashboard = () => {
   const dispatch = useDispatch();
 
-  const services = useSelector(getServices);
-  const banner = useSelector(getBanner);
+  const services = useSelector(getServicesData);
+  const banner = useSelector(getBannerData);
 
-  // console.log("services:", services);
-  // console.log("banner:", banner);
   useEffect(() => {
     dispatch(fetchBanner());
     dispatch(fetchServices());

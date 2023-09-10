@@ -34,7 +34,7 @@ const TopUp = () => {
     setValue("top_up_amount", top_up_amount);
     setNominal(getValues("top_up_amount"));
   };
-
+console.log('top upnomonal :', nominal)
   return (
     <>
       <ModalTopup show={showTopUp} onHide={setShowTopUp} nominal={nominal} />

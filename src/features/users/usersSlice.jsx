@@ -42,16 +42,8 @@ export const loginUser = createAsyncThunk(
 
       return response.data;
     } catch (error) {
-      if (error.response) {
-        console.error("Error during login:", error.response);
-      } else if (error.request) {
-        console.error(
-          "Error during login: Network Error",
-          error.request.message
-        );
-      } else {
-        console.error("Error during login:", error);
-      }
+      console.error("Error during login:", error.response);
+      return error.response.data;
     }
   }
 );

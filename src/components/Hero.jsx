@@ -7,12 +7,12 @@ import { fetchProfile, getProfile } from "../features/users/usersSlice";
 import {
   fetchBalance,
   formatIDR,
-  getBalance,
+  getBalanceData,
 } from "../features/datas/datasSlice";
 const Hero = () => {
   const dispatch = useDispatch();
   const profile = useSelector(getProfile);
-  const saldo = useSelector(getBalance);
+  const saldo = useSelector(getBalanceData);
   const [showBalance, setShowBalance] = useState(false);
   useEffect(() => {
     dispatch(fetchProfile());
@@ -21,7 +21,7 @@ const Hero = () => {
   const toggleBalance = () => {
     setShowBalance(!showBalance);
   };
-  const saldoLength = saldo?.data?.balance.toString();
+  const saldoLength = saldo?.data?.balance?.toString();
   const point = "•".repeat(saldoLength?.length);
   const profileImageSrc = profile?.data?.profile_image || Profile;
   return (

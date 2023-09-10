@@ -5,16 +5,38 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { API } from "../../app/api";
 
 const initialState = {
-  balance: null,
-  services: null,
-  banner: null,
-  topup: null,
-  transactionHistory: null,
-  transaction: null,
-  status: "idle",
-  statusTopup: "idle",
-  error: null,
+  balance: {
+    data: null,
+    status: "idle",
+    error: null,
+  },
+  services: {
+    data: null,
+    status: "idle",
+    error: null,
+  },
+  banner: {
+    data: null,
+    status: "idle",
+    error: null,
+  },
+  topup: {
+    data: null,
+    status: "idle",
+    error: null,
+  },
+  transactionHistory: {
+    data: null,
+    status: "idle",
+    error: null,
+  },
+  transaction: {
+    data: null,
+    status: "idle",
+    error: null,
+  },
 };
+
 export const fetchBalance = createAsyncThunk("datas/fetchBalance", async () => {
   const response = await API.get("/balance");
   return response.data;
@@ -83,81 +105,87 @@ const datasSlice = createSlice({
     builder
       //balance
       .addCase(fetchBalance.fulfilled, (state, action) => {
-        state.balance = action.payload;
-        state.status = "succeeded";
+        state.balance.data = action.payload;
+        state.balance.status = "succeeded";
       })
       .addCase(fetchBalance.pending, (state, action) => {
-        state.status = "loading";
+        state.balance.status = "loading";
       })
       .addCase(fetchBalance.rejected, (state, action) => {
-        state.status = "failed";
-        state.error = action.error.message;
+        state.balance.status = "failed";
+        state.balance.error = action.error.message;
       })
       //service
       .addCase(fetchServices.fulfilled, (state, action) => {
-        state.services = action.payload;
-        state.status = "succeeded";
+        state.services.data = action.payload;
+        state.services.status = "succeeded";
       })
       .addCase(fetchServices.pending, (state, action) => {
-        state.status = "loading";
+        state.services.status = "loading";
       })
       .addCase(fetchServices.rejected, (state, action) => {
-        state.status = "failed";
-        state.error = action.error.message;
+        state.services.status = "failed";
+        state.services.error = action.error.message;
       })
       //banner
       .addCase(fetchBanner.fulfilled, (state, action) => {
-        state.banner = action.payload;
+        state.banner.data = action.payload;
+        state.banner.status = "succeeded";
       })
       .addCase(fetchBanner.pending, (state, action) => {
-        state.status = "loading";
+        state.banner.status = "loading";
       })
       .addCase(fetchBanner.rejected, (state, action) => {
-        state.status = "failed";
-        state.error = action.error.message;
+        state.banner.status = "failed";
+        state.banner.error = action.error.message;
       })
       //topup
       .addCase(topUp.fulfilled, (state, action) => {
-        state.topup = action.payload;
-        state.statusTopup = "succeeded";
+        state.topup.data = action.payload;
+        state.topup.status = "succeeded";
       })
       .addCase(topUp.pending, (state, action) => {
-        state.statusTopup = "loading";
+        state.topup.status = "loading";
       })
       .addCase(topUp.rejected, (state, action) => {
-        state.statusTopup = "failed";
-        state.error = action.error.message;
+        state.topup.status = "failed";
+        state.topup.error = action.error.message;
       }) //history
       .addCase(fetchTransactionHistory.fulfilled, (state, action) => {
-        state.transactionHistory = action.payload;
-        state.status = "succeeded";
+        state.transactionHistory.data = action.payload;
+        state.transactionHistory.status = "succeeded";
       })
       .addCase(fetchTransactionHistory.pending, (state, action) => {
-        state.status = "loading";
+        state.transactionHistory.status = "loading";
       })
       .addCase(fetchTransactionHistory.rejected, (state, action) => {
-        state.status = "failed";
-        state.error = action.error.message;
+        state.transactionHistory.status = "failed";
+        state.transactionHistory.error = action.error.message;
       })
       //history
       .addCase(Transaction.fulfilled, (state, action) => {
-        state.transaction = action.payload;
-        state.status = "succeeded";
+        state.transaction.data = action.payload;
+        state.transaction.status = "succeeded";
       })
       .addCase(Transaction.pending, (state, action) => {
-        state.status = "loading";
+        state.transaction.status = "loading";
       })
       .addCase(Transaction.rejected, (state, action) => {
-        state.status = "failed";
-        state.error = action.error.message;
+        state.transaction.status = "failed";
+        state.transaction.error = action.error.message;
       });
   },
 });
 
-export const getBalance = (state) => state.datas.balance;
-export const getServices = (state) => state.datas.services;
-export const getBanner = (state) => state.datas.banner;
-export const getStatusTopup = (state) => state.datas.statusTopup;
-export const getTransactionHistory = (state) => state.datas.transactionHistory;
+export const getBalanceData = (state) => state.datas.balance.data;
+export const getBalanceStatus = (state) => state.datas.balance.status;
+export const getServicesData = (state) => state.datas.services.data;
+export const getServicesStatus = (state) => state.datas.services.status;
+export const getBannerData = (state) => state.datas.banner.data;
+export const getBannerStatus = (state) => state.datas.banner.status;
+
+export const getTopupStatus = (state) => state.datas.topup.status;
+export const getTransactionHistoryData = (state) =>
+  state.datas.transactionHistory.data;
 
 export default datasSlice.reducer;

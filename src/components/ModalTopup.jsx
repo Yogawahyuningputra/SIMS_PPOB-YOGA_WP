@@ -1,36 +1,36 @@
-import React, { useEffect, useState } from "react";
-import { Button, Image, Modal } from "react-bootstrap";
+import { useState } from "react";
+import { Image, Modal } from "react-bootstrap";
 import Logo from "../assets/icons/Logo.png";
-import { useDispatch, useSelector } from "react-redux";
-import { formatIDR, getStatusTopup, topUp } from "../features/datas/datasSlice";
+import { useDispatch } from "react-redux";
+import { formatIDR, topUp } from "../features/datas/datasSlice";
 import ModalTopupSuccess from "./ModalTopupSuccess";
 import ModalTopupFailed from "./ModalTopupFailed";
 
 function ModalTopup({ show, onHide, nominal }) {
-  const [showError, setShowError] = useState(false);
+  const [showFailed, setShowFailed] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
   const dispatch = useDispatch();
-  const statusTopup = useSelector(getStatusTopup);
-
-  const handleTopup = (nominal) => {
-    dispatch(topUp(nominal));
+  const handleTopup = (data) => {
+    dispatch(topUp(data))
+      .then((result) => {
+        // console.log("result:=>", result);
+        if (result.payload.status === 0) {
+          setShowSuccess(true);
+          onHide();
+        }
+      })
+      .catch((error) => {
+        console.error("Error dispatching top up:", error);
+        setShowFailed(true);
+        onHide();
+      });
   };
-
-  useEffect(() => {
-    if (statusTopup === "failed") {
-      setShowError(true);
-      onHide();
-    } else if (statusTopup === "succeeded") {
-      setShowSuccess(true);
-      onHide();
-    }
-  }, [statusTopup]);
 
   return (
     <>
       <ModalTopupFailed
-        show={showError}
-        onHide={() => setShowError(false)}
+        show={showFailed}
+        onHide={() => setShowFailed(false)}
         nominal={nominal}
       />
       <ModalTopupSuccess
@@ -54,7 +54,7 @@ function ModalTopup({ show, onHide, nominal }) {
             <p className="fs-3">{formatIDR(nominal?.top_up_amount)}</p>
             <p
               style={{ color: "#f13b2f", cursor: "pointer" }}
-              onClick={() => handleTopup(nominal?.top_up_amount)}
+              onClick={() => handleTopup(nominal)}
             >
               Ya, lanjutkan
             </p>

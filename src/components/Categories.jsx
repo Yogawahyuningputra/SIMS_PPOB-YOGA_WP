@@ -4,7 +4,6 @@ import Payment from "./Payment";
 import { useState } from "react";
 
 const Categories = ({ services }) => {
-  console.log(services);
   const [selectedService, setSelectedService] = useState(null);
   const handleServiceClick = (service) => {
     setSelectedService(service);

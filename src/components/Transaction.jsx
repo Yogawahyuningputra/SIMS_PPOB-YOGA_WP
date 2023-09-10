@@ -5,13 +5,13 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   fetchTransactionHistory,
   formatIDR,
-  getTransactionHistory,
+  getTransactionHistoryData,
 } from "../features/datas/datasSlice";
 import moment from "moment/moment";
 
 const Transaction = () => {
   const dispatch = useDispatch();
-  const history = useSelector(getTransactionHistory);
+  const history = useSelector(getTransactionHistoryData);
   const [offset, setOffset] = useState(5);
   useEffect(() => {
     dispatch(fetchTransactionHistory(offset));
@@ -54,8 +54,8 @@ const Transaction = () => {
                   </p>
                 </div>
                 <div>
-                  <p className="mt-4 mx-2 fw-bold">{item?.transaction_type}</p>
-                  {/* <p>{item?.description}</p> */}
+                  {/* <p className="mt-4 mx-2 fw-bold">{item?.transaction_type}</p> */}
+                  <p className="mt-4 mx-2 fw-bold">{item?.description}</p>
                 </div>
               </div>
             </Card>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Container,
   Row,
@@ -9,6 +9,7 @@ import {
   InputGroup,
   Stack,
   FormControl,
+  Alert,
 } from "react-bootstrap";
 import { BiLock, BiShow, BiHide } from "react-icons/bi";
 import { useForm, Controller } from "react-hook-form";
@@ -24,11 +25,21 @@ const Login = () => {
     control,
     formState: { errors },
   } = useForm();
-  const [showPassword, setShowPassword] = React.useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [message, setMessage] = useState(null);
   const dispatch = useDispatch();
+  const alertFailed = (
+    <Alert variant="danger" className="py-1">
+      Email atau password salah
+    </Alert>
+  );
 
   const onSubmit = (data) => {
-    dispatch(loginUser(data));
+    dispatch(loginUser(data)).then((result) => {
+      if (result.payload.status === 103) {
+        setMessage(alertFailed);
+      }
+    });
   };
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -132,7 +143,7 @@ const Login = () => {
                   type="submit"
                   variant="outline"
                   className="w-100 my-3 fw-bold"
-                  style={{ backgroundColor: "salmon", color: "white" }}
+                  style={{ backgroundColor: "#f13b2f", color: "white" }}
                 >
                   Login
                 </Button>
@@ -153,6 +164,7 @@ const Login = () => {
                 </p>
               </div>
             </Form>
+            {message}
           </div>
         </Col>
 
