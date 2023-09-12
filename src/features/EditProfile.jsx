@@ -45,10 +45,15 @@ const EditProfile = () => {
   };
   const handleChange = (e) => {
     if (e.target.type === "file") {
-      setSelectedFile({
-        ...selectedFile,
-        [e.target.name]: e.target.files[0],
-      });
+      const fileType = e.target.files[0]?.type;
+      if (fileType == "image/jpeg" || fileType == "image/png") {
+        setSelectedFile({
+          ...selectedFile,
+          [e.target.name]: e.target.files[0],
+        });
+      } else {
+        alert("Hanya file JPEG dan PNG yang diperbolehkan.");
+      }
     }
   };
 

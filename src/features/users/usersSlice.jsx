@@ -98,8 +98,12 @@ export const uploadImageUser = createAsyncThunk(
 );
 
 export const fetchProfile = createAsyncThunk("user/fetchProfile", async () => {
-  const response = await API.get("/profile");
-  return response.data;
+  try {
+    const response = await API.get("/profile");
+    return response.data;
+  } catch (error) {
+    return error.response.data;
+  }
 });
 
 const usersSlice = createSlice({

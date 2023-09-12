@@ -9,18 +9,24 @@ import {
   formatIDR,
   getBalanceData,
 } from "../features/datas/datasSlice";
+import { logout } from "../features/auth/authSlice";
 const Hero = () => {
   const dispatch = useDispatch();
   const profile = useSelector(getProfile);
   const saldo = useSelector(getBalanceData);
   const [showBalance, setShowBalance] = useState(false);
   useEffect(() => {
-    dispatch(fetchProfile());
     dispatch(fetchBalance());
+    dispatch(fetchProfile()).then((result) => {
+      if (result.payload.status === 108) {
+        dispatch(logout());
+      }
+    });
   }, [dispatch]);
   const toggleBalance = () => {
     setShowBalance(!showBalance);
   };
+
   const saldoLength = saldo?.data?.balance?.toString();
   const point = "•".repeat(saldoLength?.length);
   const profileImageSrc = profile?.data?.profile_image || Profile;

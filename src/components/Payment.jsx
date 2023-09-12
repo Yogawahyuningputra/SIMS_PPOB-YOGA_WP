@@ -122,8 +122,13 @@ const Payment = ({ selectedService }) => {
                       render={({ field }) => (
                         <FormControl
                           {...field}
-                          style={{ borderLeft: "none", height: "45px" }}
+                          style={{
+                            borderLeft: "none",
+                            height: "45px",
+                            backgroundColor: "white",
+                          }}
                           type="number"
+                          disabled
                         />
                       )}
                     />
